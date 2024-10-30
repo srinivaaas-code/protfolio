@@ -215,7 +215,7 @@
                 </div>
                 <div class="col-12 col-lg-6 mt-0">
                     <div class="contact_form">
-                        <form action="">
+                        <form name="submit-to-google-sheet">
                             <h2>Send Message</h2>
                             <div class="input_box">
                                 <input type="text" name="Name" required="required">
@@ -226,13 +226,14 @@
                                 <span>Email</span>
                             </div>
                             <div class="input_box">
-                                <textarea name="" id="" required="required"></textarea>
+                                <textarea name="Message" id="" required="required"></textarea>
                                 <span>Type Your Message....</span>
                             </div>
                             <div class="input_box">
                                 <input type="submit" name="submit" value="send">
                             </div>
                         </form>
+                        <span id="contact_message"></span>
                     </div>
                 </div>
             </div>
@@ -249,10 +250,28 @@
                 <a href="#project">Project</a>
                 <a href="#contact">Contact</a>
             </div>
-            
+            <p>2024 Copyright <i class="fa-regular fa-copyright"></i>  Srinivaas </p>
         </div>
     </section>
 
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyPUVA7wifFN0rj93MFB6lgl7BAfoGL9K9DvbK2TF046nPCeEGBXS5ydidW3d52LPlxCQ/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const contact_message = document.getElementById("contact_message")
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault()
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                contact_message.innerHTML = "Messsage sent Successfully"
+                setTimeout(function(){
+                    contact_message.innerHTML = ""
+                },5000)
+                form.reset()
+            })
+            .catch(error => console.error('Error!', error.message))
+        })
+      </script>
 </body>
 
 </html>
